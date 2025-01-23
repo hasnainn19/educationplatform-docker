@@ -65,6 +65,22 @@ git clone --recurse-submodules git@github.com:mdenet/educationplatform-docker.gi
 
 > Note that for ssh access you must [configure](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) your account with a key.
 
+## Environment Variables
+
+Before building the platform the ```env.example``` file should be renamed to ```.env``` and the environment variables listed below must be populated with relevant values listed below.
+
+ + **TRUSTED_ORIGINS** comma delimited whitelist of base URLs (with no trailing slash) for CORS aware endpoints
+ + **ES_DEPLOY_ADDRESS** base URL + /tools/xtext/editors
+ + **ES_ADDRESS** base URL + /tools/xtext/project
+
+Here is an example of the ```.env``` file provided that the base URl of the platform server is https://ep.mde-network.org:
+
+```
+TRUSTED_ORIGINS=https://ep.mde-network.org
+ES_DEPLOY_ADDRESS=https://ep.mde-network.org/tools/xtext/editors
+ES_ADDRESS=https://ep.mde-network.org/tools/xtext/project
+```
+
 ## Build and run the docker image
 This builds the docker images and starts the platform servers.
 ```
@@ -94,3 +110,9 @@ chmod -R 755 {public,educationplatform-examples}
 ## Stopping the platform
 
 To safely stop the platform use `ctrl-c`  in the terminal running the platform.
+
+
+## Deployment on a Server Behind a Load Balancer
+
+It is quite common to have a web server running behind a firewall or load balancer. In this scenario, the public IP of the server or the FQDN can only be accessed on either port 443 (HTTPS) or 80 (HTTP). Therefore, it is not possible to interact with containers that run on other ports of the server directly. To access the education platform and other containers, the reverse proxy container acts as a gateway and is pre-configured to listen on port 8080. The reverse proxy container can also be used when there is no load balancer.
+
