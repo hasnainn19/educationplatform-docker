@@ -14,11 +14,15 @@ services:
             - "8081:80"
         environment:
             - TOKEN_SERVER_URL
+            - WEBSOCKETS_URI
+            - FEEDBACK_SURVEY_URL
         build:
           context: educationplatform
           dockerfile: ./platform/Dockerfile
           args: 
               - TOKEN_SERVER_URL=$TOKEN_SERVER_URL
+              - WEBSOCKETS_URI=$WEBSOCKETS_URI
+              - FEEDBACK_SURVEY_URL=$FEEDBACK_SURVEY_URL
         volumes:
             - ./config/list-redirect.conf:/etc/nginx/conf.d/default.conf
             - ./public/list.html:/usr/share/nginx/html/list.html
@@ -54,7 +58,7 @@ services:
          dockerfile: static.conversion/Dockerfile
 
     mdenet-tool-epsilon:
-        image: ghcr.io/epsilonlabs/playground-micronaut:0.1
+        image: ghcr.io/epsilonlabs/playground-backend/ep-tool-server:epsilon2.8
         ports:
             - "8070:8080"
         restart: unless-stopped
